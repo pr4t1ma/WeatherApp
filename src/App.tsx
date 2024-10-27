@@ -1,4 +1,5 @@
 import "./App.css";
+import EnvDashboard from "./EnvDashboard";
 import Menu from "./Menu";
 import Weekweather from "./Weekweather";
 
@@ -24,6 +25,7 @@ function App() {
         alt=""
       />
       <Weekweather />
+      <EnvDashboard />
     </div>
   );
 }
