@@ -1,28 +1,35 @@
+import { useEffect, useState } from "react";
 import Weather from "./Weather";
+const getDayName = (dateString) => {
+  const options = { weekday: "long" }; // 'long' gives full name like 'Monday'
+  return new Date(dateString).toLocaleDateString("en-US", options);
+};
 
 const Weekweather = () => {
+  const [data, setData] = useState([]);
+
+  const getData = async () => {
+    const response = await fetch(
+      "https://api.weatherbit.io/v2.0/forecast/daily?city=Berlin&key=2a9f605394cb4e62a59859564be9660f"
+    ).then((res) => res.json());
+    setData(response.data);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
-    <div className="flex flex-row gap-5 flex-wrap">
-      <Weather
-        img="https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-2.png"
-        heading="sunday"
-        tem={22}
-      />
-      <Weather
-        img="https://www.freeiconspng.com/uploads/weather-icon-png-25.png"
-        heading="Monday"
-        tem={27}
-      />
-      <Weather
-        img="https://static.vecteezy.com/system/resources/thumbnails/010/989/531/small_2x/hot-weather-3d-rendering-isolated-on-transparent-background-ui-ux-icon-design-web-and-app-trend-png.png"
-        heading="Tuesday"
-        tem={32}
-      />
-      <Weather
-        img="https://static.vecteezy.com/system/resources/thumbnails/011/992/945/small/thunderstorm-rain-icon-weather-forecast-meteorological-sign-3d-render-png.png"
-        heading="Wednesday"
-        tem={20}
-      />
+    <div className="flex flex-row gap-5 flex-wrap shadow-md p-5">
+      {data.map((weather) => {
+        return (
+          <Weather
+            img="https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-2.png"
+            heading={getDayName(weather.datetime)}
+            tempHigh={weather.high_temp}
+            tempLow={weather.low_temp}
+          />
+        );
+      })}
     </div>
   );
 };
